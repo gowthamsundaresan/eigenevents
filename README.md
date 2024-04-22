@@ -4,6 +4,42 @@
 
 Provides an easy interface for querying historical transaction data from EigenLayer M2 contracts on Ethereum Mainnet based on emitted events from DelegationManager, AVSDirectory, StrategyManager, and EigenPodManager. ABIs and contract addresses included.
 
+## Installation
+
+Clone the repo
+
+```bash
+git clone https://github.com/gowthamsundaresan/eigenevents.git
+cd eigenevents
+```
+
+Install the necessary Node.js dependencies:
+
+```bash
+yarn install
+```
+
+## How to Use
+
+```bash
+import EigenEvents from './path/to/EigenEvents.js';
+
+const eigenEvents = new EigenEvents("your_rpc_url");
+
+async function fetchEvents() {
+    try {
+        // Example: Fetch 'OperatorRegistered' events from the 'DelegationManager' contract between two blocks
+        // Note: 19492759 is the block that EL contracts were first deployed
+        const events = await eigenEvents.getOperatorRegisteredEvents(19492759, 'latest');
+        console.log(events);
+    } catch (error) {
+        console.error('Error fetching events:', error);
+    }
+}
+
+fetchEvents();
+```
+
 ## Events That Can Be Retrieved
 
 ### DelegationManager.sol
@@ -51,42 +87,6 @@ Provides an easy interface for querying historical transaction data from EigenLa
 | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | `getOperatorAVSRegistrationStatusUpdatedEvents` | Emitted when an operator's registration status to AVS is updated. This could be due to a new registration or deregistration. The event logs the change and is crucial for tracking the registration lifecycle of operators within the AVS ecosystem, helping to manage and verify operator permissions and statuses effectively. | `operator: address, avs: address, status: OperatorAVSRegistrationStatus` |
 | `getAVSMetadataURIUpdatedEvents`                | Emitted when the metadata URI for an AVS is updated. This event is used to log updates to the metadata associated with an AVS, which can include changes in service descriptions or operational details. This is essential for maintaining current and accessible service information for users of the AVS.                      | `avs: address, metadataURI: string`                                      |
-
-## Installation
-
-Clone the repo
-
-```bash
-git clone https://github.com/gowthamsundaresan/eigenevents.git
-cd eigenevents
-```
-
-Install the necessary Node.js dependencies:
-
-```bash
-yarn install
-```
-
-## How to Use
-
-```bash
-import EigenEvents from './path/to/EigenEvents.js';
-
-const eigenEvents = new EigenEvents("your_rpc_url");
-
-async function fetchEvents() {
-    try {
-        // Example: Fetch 'OperatorRegistered' events from the 'DelegationManager' contract between two blocks
-        // Note: 19492759 is the block that EL contracts were first deployed
-        const events = await eigenEvents.getOperatorRegisteredEvents(19492759, 'latest');
-        console.log(events);
-    } catch (error) {
-        console.error('Error fetching events:', error);
-    }
-}
-
-fetchEvents();
-```
 
 ## Contributing
 
