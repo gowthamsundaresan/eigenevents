@@ -2,7 +2,7 @@
 
 ## Overview
 
-Provides an easy interface for querying historical transaction data from EigenLayer M2 contracts on Ethereum Mainnet based on emitted events from DelegationManager, AVSDirectory, StrategyManager, and EigenPodManager. ABIs and contract addresses included.
+Provides an easy interface for querying historical transaction data from EigenLayer contracts on Ethereum Mainnet based on emitted events from DelegationManager, AVSDirectory, StrategyManager, and EigenPodManager. ABIs and contract addresses included.
 
 ## Installation
 
