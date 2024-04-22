@@ -1,0 +1,12 @@
+{
+  "name": "eigenevents",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "web3": "^4.8.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}
