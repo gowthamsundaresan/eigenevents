@@ -21,6 +21,9 @@ yarn install
 
 ## How to Use
 
+Fetching 'OperatorRegistered' events from the 'DelegationManager' contract between two blocks
+Note: 19492759 is the block that EL contracts were first deployed
+
 ```bash
 import EigenEvents from './path/to/EigenEvents.js';
 
@@ -28,8 +31,6 @@ const eigenEvents = new EigenEvents("your_rpc_url");
 
 async function fetchEvents() {
     try {
-        // Example: Fetch 'OperatorRegistered' events from the 'DelegationManager' contract between two blocks
-        // Note: 19492759 is the block that EL contracts were first deployed
         const events = await eigenEvents.getOperatorRegisteredEvents(19492759, 'latest');
         console.log(events);
     } catch (error) {
