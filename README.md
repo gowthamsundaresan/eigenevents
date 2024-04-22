@@ -1,16 +1,10 @@
 # EigenEvents Library Documentation
 
----
-
 ## Overview
-
----
 
 Provides an easy interface for querying historical transaction data from EigenLayer M2 contracts on Ethereum Mainnet based on emitted events from DelegationManager, AVSDirectory, StrategyManager, and EigenPodManager. ABIs and contract addresses included.
 
 ## Events That Can Be Retrieved
-
----
 
 ### DelegationManager.sol
 
@@ -31,8 +25,6 @@ Provides an easy interface for querying historical transaction data from EigenLa
 | `getWithdrawalQueuedEvents`                 | Emitted when a withdrawal is queued, marking the initiation of the withdrawal process. This event is used to track the start of the withdrawal's waiting period, governed by the previously set withdrawal delay blocks.                                                        | `withdrawalRoot: bytes32, withdrawal: { staker: address, delegatedTo: address, withdrawer: address, nonce: uint256, startBlock: uint256, strategies: [address], shares: [uint256] }` |
 
 ### StrategyManager.sol
-
-Here's a detailed table listing all the functions from the `StrategyEvents.js` associated with the `StrategyManager` contract, descriptions of when each event is emitted according to the Solidity contract comments, and the exact parameters outputted by the code in `StrategyEvents.js`:
 
 | Function Name                                  | Event Description                                                                                                                                                                                                                              | Output Parameters                                                      |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -62,8 +54,6 @@ Here's a detailed table listing all the functions from the `StrategyEvents.js` a
 
 ## Installation
 
----
-
 Clone the repo
 
 ```bash
@@ -78,8 +68,6 @@ yarn install
 ```
 
 ## How to Use
-
----
 
 ```bash
 import EigenEvents from './path/to/EigenEvents.js';
@@ -101,8 +89,6 @@ fetchEvents();
 ```
 
 ## Contributing
-
----
 
 Contributions to this project are welcome! Please follow these steps:
 
