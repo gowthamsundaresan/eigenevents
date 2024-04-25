@@ -38,4 +38,4 @@ next-env.d.ts
 .prettierrc
 
 # test files
-fetch.js
+/test
