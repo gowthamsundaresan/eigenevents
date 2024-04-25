@@ -578,8 +578,53 @@ class EigenEvents {
             // Events from DelegationManager.sol
             OperatorRegistered: (params) => `${params.operator} registered as an Operator.`,
             OperatorMetadataURIUpdated: (params) =>
+                `${params.operator} (Operator) updated their metadata to ${params.metadataURI}.`,
+            OperatorMetadataURIUpdated: (params) =>
                 `${params.operator} updated their metadata URI to ${params.metadataURI}.`,
-            StakerDelegated: (params) => `${params.staker} delegated stake to ${params.operator}.`,
+            MinWithdrawalDelayBlocksSet: (params) =>
+                `MinWithdrawalDelayBlocks set from ${params.previousMinWithdrawalDelayBlocks} to ${params.newMinWithdrawalDelayBlocks}.`,
+            OperatorDetailsModified: (params) => `${params.operator} modified their details.`,
+            OperatorSharesDecreased: (params) =>
+                `${params.operator} shares in strategy ${params.strategy} decreased to ${params.shares} due to undelegation from ${params.staker}`,
+            OperatorSharesIncreased: (params) =>
+                `${params.operator} shares in strategy ${params.strategy} increased to ${params.shares} due to delegation from ${params.staker}`,
+            StakerDelegated: (params) => `${params.staker} delegated stake to ${params.operator}`,
+            StakerForceUndelegated: (params) =>
+                `${params.staker} has been forcibly undelegated by ${params.operator}.`,
+            StakerUndelegated: (params) =>
+                `${params.staker} undelegated stake from ${params.operator}`,
+            StrategyWithdrawalDelayBlocksSet: (params) =>
+                `WithdrawalDelayBlocks for strategy ${params.strategy} changed from ${params.previousWithdrawalDelayBlocks} to ${params.newWithdrawalDelayBlocks}.`,
+            WithdrawalCompleted: (params) => `Withdrawal completed: ${params.withdrawalRoot}`,
+            WithdrawalMigrated: (params) =>
+                `Withdrawal migrated from ${params.oldWithdrawalRoot} to ${params.newWithdrawalRoot}.`,
+            WithdrawalQueued: (params) =>
+                `Withdrawal from ${params.withdrawal.staker} to ${params.withdrawal.withdrawer}`,
+
+            // Events from StrategyManager.sol
+            // TODO: 4 more events from this contract
+            Deposit: (params) =>
+                `${params.staker} deposited token ${params.token} for ${params.shares} shares`,
+            OwnershipTransferred: (params) =>
+                `Ownership of StrategyManager.sol transferred from ${params.previousOwner} to ${params.newOwner}`,
+
+            // Events from EigenPodManager.sol
+            BeaconChainETHDeposited: (params) =>
+                `${params.podOwner} deposited Beacon Chain ETH of amount ${params.amount}`,
+            BeaconChainETHWithdrawalCompleted: (params) =>
+                `${params.podOwner} Beacon Chain ETH of amount ${params.amount} completed`,
+            BeaconOracleUpdated: (params) =>
+                `Beacon Chain Oracle updated to ${params.newOracleAddress}`,
+            PodDeployedEvents: (params) =>
+                `New EigenPod deployed by ${params.podOwner} at ${params.podAddress}`,
+            PodSharesUpdated: (params) =>
+                `EigenPod shares of ${params.podOwner} changed by ${params.sharesDelta}`,
+
+            // Events from AVSDirectory.sol
+            OperatorAVSRegistrationStatusUpdated: (params) =>
+                `Operator ${params.operator} updated registration status with AVS ${params.avs}`, // add what it changed to
+            AVSMetadataURIUpdated: (params) =>
+                `${params.avs} (AVS) updated their metadata to ${params.metadataURI}.`,
         }
         return templates[eventName]
     }
