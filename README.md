@@ -2,7 +2,7 @@
 
 ## Overview
 
-Provides an easy interface for querying historical transaction data from EigenLayer contracts on Ethereum Mainnet based on emitted events from DelegationManager, AVSDirectory, StrategyManager, and EigenPodManager. ABIs and contract addresses included.
+Provides an easy interface for querying historical transaction data or listening to real-time blockchain data from EigenLayer contracts on Ethereum Mainnet based on emitted events from the proxy contracts of DelegationManager, AVSDirectory, StrategyManager, and EigenPodManager. ABIs and contract addresses included.
 
 ## Installation
 
@@ -21,24 +21,90 @@ yarn install
 
 ## How to Use
 
-Fetching 'OperatorRegistered' events from the 'DelegationManager' contract between two blocks
-Note: 19492759 is the block that EL contracts were first deployed
+Every event defined in DelegationManager.sol, AVSDirectory.sol, StrategyManager.sol, and EigenPodManager.sol has a corresponding function you can call to query for either historical data or real-time feeds (via websocket).
+<br>
+Look at the list in the next section to view all callable functions.
+
+### Calling a function
+
+Every function has the same parameters and return data structure.
+<br>
+Params:
+
+1. fromBlock (number) - Starting block number to fetch events (optional, not required for real-time data)
+2. toBlock (number) - Ending block number to fetch events (optional, not required for real-time data)
+3. realTime (bool) - Whether to listen to events in real-time
+4. callback (function) - (Optional) callback to handle the events (optional, use this to handle real-time data)
+
+### Fetching data in real time
 
 ```bash
-import EigenEvents from './path/to/EigenEvents.js';
+import EigenEvents from "../EigenEvents.js"
 
-const eigenEvents = new EigenEvents("your_rpc_url");
+const wsURL = "wss://<YOUR_URL>"
+const eigenEventsRealTime = new EigenEvents(wsURL, "ws")
 
-async function fetchEvents() {
-    try {
-        const events = await eigenEvents.getOperatorRegisteredEvents(19492759, 'latest');
-        console.log(events);
-    } catch (error) {
-        console.error('Error fetching events:', error);
+function handleEventResponse(err, data) {
+    if (err) {
+        console.error("Error receiving data:", err)
+    } else {
+        console.log(data)
     }
 }
 
-fetchEvents();
+console.log("Listening to realtime data...")
+eigenEventsRealTime.getWithdrawalQueuedEvents(null, null, true, handleEventResponse)
+eigenEventsRealTime.getOperatorRegisteredEvents(null, null, true, handleEventResponse)
+eigenEventsRealTime.getOperatorMetadataURIUpdatedEvents(null, null, true, handleEventResponse)
+eigenEventsRealTime.getStakerDelegatedEvents(null, null, true, handleEventResponse)
+```
+
+### Fetching historical data
+
+```bash
+import EigenEvents from "../EigenEvents.js"
+
+const rpcUrl = "https://<YOUR_URL>"
+const eigenEventsHistoric = new EigenEvents(rpcUrl, "http")
+
+const fromBlock = 19492759
+const toBlock = 19692759
+
+try {
+    console.log("Fetching historical data...")
+    const historicalData = await eigenEventsHistoric.getStakerDelegatedEvents(fromBlock, toBlock)
+    console.log(historicalData)
+} catch (error) {
+    console.error("Error fetching events:", error)
+}
+```
+
+Example outputs:
+
+```bash
+{
+  transactionHash: '0x57efb8f76321a2a2c5bb4219bef3147593ab177ae067d30b4178114aa7f43e18',
+  blockNumber: 19733953n,
+  event: 'StakerDelegated',
+  returnValues: {
+    staker: '0xeeba069d1d131428145c337212E42c9e2f0FCa07',
+    operator: '0xDbEd88D83176316fc46797B43aDeE927Dc2ff2F5'
+  },
+  message: '0xeeba069d1d131428145c337212E42c9e2f0FCa07 delegated stake to 0xDbEd88D83176316fc46797B43aDeE927Dc2ff2F5.'
+}
+```
+
+```bash
+{
+  transactionHash: '0x57efb8f76321a2a2c5bb4219bef3147593ab177ae067d30b4178114aa7f43e18',
+  blockNumber: 19733953n,
+  event: 'StakerDelegated',
+  returnValues: {
+    staker: '0xeeba069d1d131428145c337212E42c9e2f0FCa07',
+    operator: '0xDbEd88D83176316fc46797B43aDeE927Dc2ff2F5'
+  },
+  message: '0xeeba069d1d131428145c337212E42c9e2f0FCa07 delegated stake to 0xDbEd88D83176316fc46797B43aDeE927Dc2ff2F5.'
+}
 ```
 
 ## Events That Can Be Retrieved
