@@ -96,14 +96,14 @@ Example outputs:
 
 ```bash
 {
-  transactionHash: '0x57efb8f76321a2a2c5bb4219bef3147593ab177ae067d30b4178114aa7f43e18',
-  blockNumber: 19733953n,
-  event: 'StakerDelegated',
+  transactionHash: '0xcaac0ff38f399af949517e1d8c32ce9788cfb31fbb29c02f8f30ff03fb557530',
+  blockNumber: 19733959n,
+  event: 'OperatorMetadataURIUpdated',
   returnValues: {
-    staker: '0xeeba069d1d131428145c337212E42c9e2f0FCa07',
-    operator: '0xDbEd88D83176316fc46797B43aDeE927Dc2ff2F5'
+    operator: '0x3dd86570a944D9fFAaEB0297b8B54531367D7521',
+    metadataURI: 'https://raw.githubusercontent.com/GateOmega/eigenlayer-metadata/main/metadata.json'
   },
-  message: '0xeeba069d1d131428145c337212E42c9e2f0FCa07 delegated stake to 0xDbEd88D83176316fc46797B43aDeE927Dc2ff2F5.'
+  message: '0x3dd86570a944D9fFAaEB0297b8B54531367D7521 updated their metadata URI to https://raw.githubusercontent.com/GateOmega/eigenlayer-metadata/main/metadata.json.'
 }
 ```
 
