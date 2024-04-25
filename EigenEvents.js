@@ -584,6 +584,12 @@ class EigenEvents {
         return templates[eventName]
     }
 
+    /**
+     * Internal method to retreive signature of an event from its contract ABI.
+     * @param {Object} contract
+     * @param {String} eventName
+     * @returns
+     */
     _getEventSignature(contract, eventName) {
         const eventABI = contract.options.jsonInterface.find(
             (e) => e.name === eventName && e.type === "event",
@@ -592,16 +598,6 @@ class EigenEvents {
 
         const signature = `${eventName}(${eventABI.inputs.map((input) => input.type).join(",")})`
         return this.web3.utils.sha3(signature)
-    }
-
-    async _fetchBlockTimestamps(events) {
-        const blockNumbers = Array.from(new Set(events.map((event) => event.blockNumber)))
-        const blockDetailsPromises = blockNumbers.map((blockNumber) =>
-            this.web3.eth.getBlock(blockNumber),
-        )
-        const blocks = await Promise.all(blockDetailsPromises)
-        const blockTimestamps = new Map(blocks.map((block) => [block.number, block.timestamp]))
-        return blockTimestamps
     }
 }
 
