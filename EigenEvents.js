@@ -574,7 +574,7 @@ class EigenEvents {
      * @returns {Function} Returns a function that formats the event's parameters into a string message.
      */
     _getMessageTemplate(eventName) {
-        const tokenMapping = {
+        const strategyMapping = {
             "0x54945180dB7943c0ed0FEE7EdaB2Bd24620256bc": "cbETH",
             "0x93c4b944D05dfe6df7645A86cd2206016c51564D": "stETH",
             "0x1BeE69b7dFFfA4E2d53C2a2Df135C388AD25dCD2": "rETH",
@@ -590,6 +590,22 @@ class EigenEvents {
             "0xbeaC0eeEeeeeEEeEeEEEEeeEEeEeeeEeeEEBEaC0": "Beacon Chain ETH",
         }
 
+        const tokenMapping = {
+            "0xBe9895146f7AF43049ca1c1AE358B0541Ea49704": "cbETH",
+            "0xae7ab96520de3a18e5e111b5eaab095312d7fe84": "stETH",
+            "0xae78736cd615f374d3085123a210448e74fc6393": "rETH",
+            "0xA35b1B31Ce002FBF2058D22F30f95D405200A15b": "ETHx",
+            "0xE95A203B1a91a908F9B9CE46459d101078c2c3cb": "ankrETH",
+            "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3": "OETH",
+            "0xf1c9acdc66974dfb6decb12aa385b9cd01190e38": "osETH",
+            "0xf951E335afb289353dc249e82926178EaC7DEd78": "swETH",
+            "0xa2e3356610840701bdf5611a53974510ae27e2e1": "wBETH",
+            "0xac3e018457b222d93114458476f3e3416abbe38f": "sfrxETH",
+            "0x8c1BEd5b9a0928467c9B1341Da1D7BD5e10b6549": "lsETH",
+            "0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa": "mETH",
+            "0xbeaC0eeEeeeeEEeEeEEEEeeEEeEeeeEeeEEBEaC0": "Beacon Chain ETH",
+        }
+
         const templates = {
             // Events from DelegationManager.sol
             OperatorRegistered: (params) => `${params.operator} registered as an Operator.`,
@@ -601,11 +617,11 @@ class EigenEvents {
                 `MinWithdrawalDelayBlocks set from ${params.previousMinWithdrawalDelayBlocks} to ${params.newMinWithdrawalDelayBlocks}.`,
             OperatorDetailsModified: (params) => `${params.operator} modified their details.`,
             OperatorSharesDecreased: (params) => {
-                const tokenName = tokenMapping[params.strategy] || params.strategy
+                const tokenName = strategyMapping[params.strategy] || params.strategy
                 return `${params.operator} shares in ${tokenName} decreased to ${params.shares} due to undelegation from ${params.staker}`
             },
             OperatorSharesIncreased: (params) => {
-                const tokenName = tokenMapping[params.strategy] || params.strategy
+                const tokenName = strategyMapping[params.strategy] || params.strategy
                 return `${params.operator} shares in ${tokenName} increased to ${params.shares} due to delegation from ${params.staker}`
             },
             StakerDelegated: (params) => `${params.staker} delegated stake to ${params.operator}`,
@@ -614,7 +630,7 @@ class EigenEvents {
             StakerUndelegated: (params) =>
                 `${params.staker} undelegated stake from ${params.operator}`,
             StrategyWithdrawalDelayBlocksSet: (params) => {
-                const tokenName = tokenMapping[params.strategy] || params.strategy
+                const tokenName = strategyMapping[params.strategy] || params.strategy
                 return `WithdrawalDelayBlocks for ${tokenName} changed from ${params.previousWithdrawalDelayBlocks} to ${params.newWithdrawalDelayBlocks}.`
             },
             WithdrawalCompleted: (params) => `Withdrawal completed: ${params.withdrawalRoot}`,
