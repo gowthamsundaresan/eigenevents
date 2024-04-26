@@ -574,6 +574,22 @@ class EigenEvents {
      * @returns {Function} Returns a function that formats the event's parameters into a string message.
      */
     _getMessageTemplate(eventName) {
+        const tokenMapping = {
+            "0x54945180dB7943c0ed0FEE7EdaB2Bd24620256bc": "cbETH",
+            "0x93c4b944D05dfe6df7645A86cd2206016c51564D": "stETH",
+            "0x1BeE69b7dFFfA4E2d53C2a2Df135C388AD25dCD2": "rETH",
+            "0x9d7eD45EE2E8FC5482fa2428f15C971e6369011d": "ETHx",
+            "0x13760F50a9d7377e4F20CB8CF9e4c26586c658ff": "ankrETH",
+            "0xa4C637e0F704745D182e4D38cAb7E7485321d059": "OETH",
+            "0x57ba429517c3473B6d34CA9aCd56c0e735b94c02": "osETH",
+            "0x0Fe4F44beE93503346A3Ac9EE5A26b130a5796d6": "swETH",
+            "0x7CA911E83dabf90C90dD3De5411a10F1A6112184": "wBETH",
+            "0x8CA7A5d6f3acd3A7A8bC468a8CD0FB14B6BD28b6": "sfrxETH",
+            "0xAe60d8180437b5C34bB956822ac2710972584473": "lsETH",
+            "0x298aFB19A105D59E74658C4C334Ff360BadE6dd2": "mETH",
+            "0xbeaC0eeEeeeeEEeEeEEEEeeEEeEeeeEeeEEBEaC0": "Beacon Chain ETH",
+        }
+
         const templates = {
             // Events from DelegationManager.sol
             OperatorRegistered: (params) => `${params.operator} registered as an Operator.`,
@@ -584,17 +600,23 @@ class EigenEvents {
             MinWithdrawalDelayBlocksSet: (params) =>
                 `MinWithdrawalDelayBlocks set from ${params.previousMinWithdrawalDelayBlocks} to ${params.newMinWithdrawalDelayBlocks}.`,
             OperatorDetailsModified: (params) => `${params.operator} modified their details.`,
-            OperatorSharesDecreased: (params) =>
-                `${params.operator} shares in strategy ${params.strategy} decreased to ${params.shares} due to undelegation from ${params.staker}`,
-            OperatorSharesIncreased: (params) =>
-                `${params.operator} shares in strategy ${params.strategy} increased to ${params.shares} due to delegation from ${params.staker}`,
+            OperatorSharesDecreased: (params) => {
+                const tokenName = tokenMapping[params.strategy] || params.strategy
+                return `${params.operator} shares in ${tokenName} decreased to ${params.shares} due to undelegation from ${params.staker}`
+            },
+            OperatorSharesIncreased: (params) => {
+                const tokenName = tokenMapping[params.strategy] || params.strategy
+                return `${params.operator} shares in ${tokenName} increased to ${params.shares} due to delegation from ${params.staker}`
+            },
             StakerDelegated: (params) => `${params.staker} delegated stake to ${params.operator}`,
             StakerForceUndelegated: (params) =>
                 `${params.staker} has been forcibly undelegated by ${params.operator}.`,
             StakerUndelegated: (params) =>
                 `${params.staker} undelegated stake from ${params.operator}`,
-            StrategyWithdrawalDelayBlocksSet: (params) =>
-                `WithdrawalDelayBlocks for strategy ${params.strategy} changed from ${params.previousWithdrawalDelayBlocks} to ${params.newWithdrawalDelayBlocks}.`,
+            StrategyWithdrawalDelayBlocksSet: (params) => {
+                const tokenName = tokenMapping[params.strategy] || params.strategy
+                return `WithdrawalDelayBlocks for ${tokenName} changed from ${params.previousWithdrawalDelayBlocks} to ${params.newWithdrawalDelayBlocks}.`
+            },
             WithdrawalCompleted: (params) => `Withdrawal completed: ${params.withdrawalRoot}`,
             WithdrawalMigrated: (params) =>
                 `Withdrawal migrated from ${params.oldWithdrawalRoot} to ${params.newWithdrawalRoot}.`,
@@ -603,8 +625,10 @@ class EigenEvents {
 
             // Events from StrategyManager.sol
             // TODO: 4 more events from this contract
-            Deposit: (params) =>
-                `${params.staker} deposited token ${params.token} for ${params.shares} shares`,
+            Deposit: (params) => {
+                const tokenName = tokenMapping[params.token] || params.token
+                return `${params.staker} deposited ${tokenName} for ${params.shares} shares`
+            },
             OwnershipTransferred: (params) =>
                 `Ownership of StrategyManager.sol transferred from ${params.previousOwner} to ${params.newOwner}`,
 
