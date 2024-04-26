@@ -656,7 +656,7 @@ class EigenEvents {
             BeaconOracleUpdated: (params) =>
                 `Beacon Chain Oracle updated to ${params.newOracleAddress}`,
             PodDeployedEvents: (params) =>
-                `New EigenPod deployed by ${params.podOwner} at ${params.podAddress}`,
+                `New EigenPod deployed by ${params.podOwner} at ${params.eigenPod}`,
             PodSharesUpdated: (params) =>
                 `EigenPod shares of ${params.podOwner} changed by ${params.sharesDelta}`,
 
