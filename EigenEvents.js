@@ -10,13 +10,40 @@ class EigenEvents {
      * @param {string} providerUrl - The URL of the Ethereum provider.
      * @param {string} [connectionType="http"] - The type of connection to use (http or ws).
      */
-    constructor(providerUrl, connectionType = "http") {
-        this.web3 = new Web3(
-            connectionType === "ws"
-                ? new Web3.providers.WebsocketProvider(providerUrl)
-                : new Web3(providerUrl),
-        )
+    constructor(providerUrl, connectionType = "http", onReconnectCallback = null) {
+        this.providerUrl = providerUrl
+        this.connectionType = connectionType
+        this.initializeConnection()
         this.contracts = this._loadContracts()
+    }
+
+    initializeConnection() {
+        if (this.connectionType === "ws") {
+            const options = {
+                reconnect: {
+                    auto: true,
+                    delay: 5000,
+                    maxAttempts: 5,
+                    onTimeout: false,
+                },
+            }
+            const provider = new Web3.providers.WebsocketProvider(this.providerUrl, options)
+            this.web3 = new Web3(provider)
+
+            provider.on("end", () => {
+                console.error("WebSocket disconnected...")
+                this.initializeConnection()
+            })
+
+            provider.on("connect", () => {
+                console.log("WebSocket connected...")
+                if (this.onReconnectCallback) {
+                    this.onReconnectCallback()
+                }
+            })
+        } else {
+            this.web3 = new Web3(this.providerUrl)
+        }
     }
 
     /*
