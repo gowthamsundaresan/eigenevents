@@ -39,10 +39,30 @@ Params:
 ### Fetching data in real time
 
 ```bash
-import EigenEvents from "../EigenEvents.js"
+import EigenEvents from "path/to/EigenEvents.js"
 
-const wsURL = "wss://<YOUR_URL>"
-const eigenEventsRealTime = new EigenEvents(wsURL, "ws")
+
+function handleReconnection() {
+    console.log("Reconnection occurred...")
+    console.log("Re-initializing event listeners...")
+    setEventListeners(eigenEventsRealTime)
+}
+
+function listenToEvents() {
+    const wsURL = "wss://<YOUR_URL>"
+    const eigenEventsRealTime = new EigenEvents(
+        wsURL,
+        "ws",
+        handleReconnection,
+    )
+    setEventListeners(eigenEventsRealTime)
+}
+
+function setEventListeners(eigenEventsRealTime) {
+        console.log("Registering listeners on Ethereum Mainnet...")
+        eigenEventsRealTime.getOperatorRegisteredEvents(null, null, true, handleEventResponse)
+        eigenEventsRealTime.getOperatorMetadataURIUpdatedEvents(null, null, true, handleEventResponse)
+}
 
 function handleEventResponse(err, data) {
     if (err) {
@@ -52,17 +72,13 @@ function handleEventResponse(err, data) {
     }
 }
 
-console.log("Listening to realtime data...")
-eigenEventsRealTime.getWithdrawalQueuedEvents(null, null, true, handleEventResponse)
-eigenEventsRealTime.getOperatorRegisteredEvents(null, null, true, handleEventResponse)
-eigenEventsRealTime.getOperatorMetadataURIUpdatedEvents(null, null, true, handleEventResponse)
-eigenEventsRealTime.getStakerDelegatedEvents(null, null, true, handleEventResponse)
+listenToEvents()
 ```
 
 ### Fetching historical data
 
 ```bash
-import EigenEvents from "../EigenEvents.js"
+import EigenEvents from "path/to/EigenEvents.js"
 
 const rpcUrl = "https://<YOUR_URL>"
 const eigenEventsHistoric = new EigenEvents(rpcUrl, "http")
