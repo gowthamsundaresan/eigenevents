@@ -13,6 +13,7 @@ class EigenEvents {
     constructor(providerUrl, connectionType = "http", onReconnectCallback = null) {
         this.providerUrl = providerUrl
         this.connectionType = connectionType
+        this.onReconnectCallback = onReconnectCallback
         this.initializeConnection()
         this.contracts = this._loadContracts()
     }
@@ -39,6 +40,10 @@ class EigenEvents {
                 console.log("WebSocket connected...")
                 if (this.onReconnectCallback) {
                     this.onReconnectCallback()
+                } else {
+                    console.log(
+                        "Warning: No callback detected, make sure you've turned on your listeners!",
+                    )
                 }
             })
         } else {

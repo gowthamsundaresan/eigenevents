@@ -41,27 +41,24 @@ Params:
 ```bash
 import EigenEvents from "path/to/EigenEvents.js"
 
-
-function handleReconnection() {
-    console.log("Reconnection occurred...")
-    console.log("Re-initializing event listeners...")
-    setEventListeners(eigenEventsRealTime)
-}
-
 function listenToEvents() {
     const wsURL = "wss://<YOUR_URL>"
     const eigenEventsRealTime = new EigenEvents(
         wsURL,
         "ws",
-        handleReconnection,
+        handleConnection,
     )
-    setEventListeners(eigenEventsRealTime)
+
+    function handleConnection() {
+      console.log("Initializing event listeners...")
+      setEventListeners(eigenEventsRealTime)
+    }
 }
 
 function setEventListeners(eigenEventsRealTime) {
-        console.log("Registering listeners on Ethereum Mainnet...")
         eigenEventsRealTime.getOperatorRegisteredEvents(null, null, true, handleEventResponse)
         eigenEventsRealTime.getOperatorMetadataURIUpdatedEvents(null, null, true, handleEventResponse)
+        console.log("All listeners initialized...")
 }
 
 function handleEventResponse(err, data) {
